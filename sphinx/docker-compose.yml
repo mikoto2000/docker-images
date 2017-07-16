@@ -1,0 +1,19 @@
+version: '3'
+services:
+    apt-cacher-ng:
+        image: apt-cacher-ng
+        volumes:
+            - apt-cacher-ng:/var/cache/apt-cacher-ng
+        expose:
+            - 3142
+    sphinx:
+        build: .
+        image: sphinx
+        volumes:
+            - ./work:/work
+        working_dir: /work
+
+volumes:
+    apt-cacher-ng:
+        external: true
+
