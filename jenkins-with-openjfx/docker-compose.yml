@@ -1,0 +1,15 @@
+version: '3'
+services:
+    jenkins:
+        image: jenkins-with-openjfx
+        volumes:
+            - jenkins_home:/var/jenkins_home
+        ports:
+            - "8080:8080"
+            - "50000:50000"
+        environment:
+            - JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/log.properties"
+        entrypoint: ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
+volumes:
+    jenkins_home:
+        external: true
