@@ -20,12 +20,11 @@ RUN npm install -g textlint
 RUN npm install -g prh
 RUN npm install -g textlint-rule-prh
 
+RUN apt -y install -y python-pip && apt-get -y clean
+RUN pip install docutils-ast-writer
+RUN npm install -g textlint-plugin-rst
+
 # textlint 結果可視化するための環境構築
 RUN apt -y install lcov && apt-get -y clean
 RUN npm install -g textlint-formatter-lcov
-
-# markdown でエディットできるようにする
-RUN apt -y install python-pip && apt-get -y clean
-RUN pip install commonmark
-RUN pip install recommonmark==0.4.0
 
