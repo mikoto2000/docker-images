@@ -30,3 +30,7 @@ RUN npm install -g textlint-formatter-lcov
 
 # 技術文章向けのルールプリセット
 RUN npm install -g textlint-rule-preset-ja-technical-writing
+
+# これを入れないと日本語ディレクトリでエラーになるので追加
+RUN apt-get -y install locales locales-all && apt-get -y clean
+ENV LANG=ja_JP.UTF-8
