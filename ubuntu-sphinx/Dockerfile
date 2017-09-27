@@ -27,3 +27,13 @@ RUN npm install -g textlint-plugin-rst
 RUN apt-get -y install lcov && apt-get -y clean
 RUN npm install -g textlint-formatter-lcov
 
+# PDF 出力のため
+RUN apt-get -y install texlive-full
+
+# PDF にフォントを埋め込むようにする
+RUN kanji-config-updmap-sys auto
+
+# 日本語パス対応
+RUN apt-get -y install locales locales-all && apt-get -y clean
+ENV LANG=ja_JP.UTF-8
+

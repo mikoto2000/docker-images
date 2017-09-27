@@ -8,6 +8,10 @@ RUN apt-get -y upgrade && apt-get -y clean
 RUN apt-get -y install make && apt-get -y clean
 RUN apt-get -y install sphinx-common && apt-get -y clean
 
+# 日本語パス対応
+RUN apt-get -y install locales locales-all && apt-get -y clean
+ENV LANG=ja_JP.UTF-8
+
 # nodejs 環境構築
 RUN apt-get -y install curl && apt-get -y clean
 RUN apt-get -y install gnupg1 gnupg2 && apt-get -y clean
@@ -31,6 +35,9 @@ RUN npm install -g textlint-formatter-lcov
 # 技術文章向けのルールプリセット
 RUN npm install -g textlint-rule-preset-ja-technical-writing
 
-# これを入れないと日本語ディレクトリでエラーになるので追加
-RUN apt-get -y install locales locales-all && apt-get -y clean
-ENV LANG=ja_JP.UTF-8
+# PDF 出力のため
+RUN apt-get -y install texlive-full && apt-get -y clean
+
+# PDF にフォントを埋め込むようにする
+RUN kanji-config-updmap-sys auto && apt-get -y clean
+
