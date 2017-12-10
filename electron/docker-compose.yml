@@ -1,0 +1,9 @@
+version: '3'
+services:
+    electron:
+        build: .
+        image: mikoto2000/electron
+        volumes:
+            - ./work:/work
+        working_dir: /work
+
