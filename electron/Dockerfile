@@ -14,6 +14,6 @@ RUN npm install -g electron-packager
 # prebuild バイナリの取得
 RUN apt -y install curl && apt-get -y clean
 RUN mkdir -p /root/.cache/electron
-RUN curl -L -o /root/.cache/electron/electron-v1.7.9-win32-x64.zip https://github.com/electron/electron/releases/download/v1.7.9/electron-v1.7.9-win32-x64.zip
-RUN curl -L -o /root/.cache/electron/SHASUMS256.txt-1.7.9 https://github.com/electron/electron/releases/download/v1.7.9/SHASUMS256.txt
+RUN curl -L -o /root/.cache/electron/electron-v1.8.2-win32-x64.zip https://github.com/electron/electron/releases/download/v1.8.2/electron-v1.8.2-win32-x64.zip
+RUN curl -L -o /root/.cache/electron/SHASUMS256.txt-1.8.2 https://github.com/electron/electron/releases/download/v1.8.2/SHASUMS256.txt
 
