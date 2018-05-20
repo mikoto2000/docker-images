@@ -1,0 +1,16 @@
+FROM debian:stretch-slim
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+
+# ベースのアップグレード
+RUN apt-get -y update
+RUN apt-get -y upgrade && apt-get -y clean
+
+# sphinx 環境構築
+RUN apt-get -y install python3-pip && apt-get -y clean
+RUN pip3 install -U sphinx
+
+# 日本語パス対応
+RUN apt-get -y install locales locales-all && apt-get -y clean
+ENV LANG=ja_JP.UTF-8
+
