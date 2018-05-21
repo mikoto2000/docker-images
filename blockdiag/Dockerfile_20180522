@@ -1,0 +1,17 @@
+FROM debian:stretch-slim
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="20180522"
+LABEL description "version: actdiag==0.5.4, blockdiag==1.5.3, nwdiag==1.0.4, seqdiag=0.9.5"
+
+# ベースのアップグレード
+RUN apt-get -y update
+RUN apt-get -y upgrade && apt-get -y clean
+
+# blockdiag 環境構築
+RUN apt-get -y install python3-pip && apt-get -y clean
+RUN pip3 install -U actdiag==0.5.4 \
+                    blockdiag==1.5.3 \
+                    nwdiag==1.0.4 \
+                    seqdiag==0.9.5
+

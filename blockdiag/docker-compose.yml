@@ -1,0 +1,10 @@
+version: '3'
+services:
+    blockdiag:
+        image: mikoto2000/blockdiag:latest
+        network_mode: none
+        volumes:
+            - c:/Windows/fonts:/usr/share/fonts
+            - ./work:/work
+        working_dir: /work
+
