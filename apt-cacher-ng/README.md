@@ -23,7 +23,7 @@ docker-compose up -d apt-cacher-ng
 debian の場合
 
 ```sh
-docker build --build-arg http_proxy=`ホストマシンの IP アドレス[※1]` [options] .
+docker build --build-arg http_proxy=`http://ホストマシンの IP アドレス[※1]:3142/` [options] .
 ```
 
 ※1 : Docker for Windows の場合は、コマンドプロンプトで `ipconfig` した結果の、 `DockerNAT` の IPv4 アドレスを入れる
