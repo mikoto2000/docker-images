@@ -1,0 +1,13 @@
+version: '3'
+services:
+    openssl:
+        image: mikoto2000/openssl:latest
+        network_mode: none
+        volumes:
+            - ./usr_lib_ssl:/usr/lib/ssl
+            - ./ca:/ca
+            - ./client:/client
+            - .:/work
+        working_dir: /work
+
+
