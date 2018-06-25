@@ -73,6 +73,7 @@ cd /client
 openssl ca -out ${CRT_FILE} -infiles ${CSR_FILE}
 ```
 
+
 ### クライアント証明書の内容確認
 
 ```sh
@@ -81,16 +82,6 @@ TARGET=01.pem
 openssl x509 -in /ca/newcerts/${TARGET} -text
 ```
 
-### crt -> p12 変換
-
-```sh
-COMMON="server_01"
-CACERT_FILE=/ca/cacert.pem
-KEY_FILE=/client/${COMMON}.key
-CRT_FILE=/client/${COMMON}.crt
-P12_FILE=/client/${COMMON}.p12
-openssl pkcs12 -export -out ${P12_FILE} -inkey ${KEY_FILE} -in ${CRT_FILE} -certfile ${CACERT_FILE}
-```
 
 ### クライアント証明書の失効
 
@@ -104,7 +95,24 @@ openssl ca -revoke /ca/newcerts/${TARGET}
 openssl ca -gencrl -out /ca/CA.crl
 ```
 
-### (クライアントの鍵と証明書要求の作り方)
+
+### crt -> p12 変換
+
+※ クライアントの仕事
+
+```sh
+COMMON="server_01"
+CACERT_FILE=/ca/cacert.pem
+KEY_FILE=/client/${COMMON}.key
+CRT_FILE=/client/${COMMON}.crt
+P12_FILE=/client/${COMMON}.p12
+openssl pkcs12 -export -out ${P12_FILE} -inkey ${KEY_FILE} -in ${CRT_FILE} -certfile ${CACERT_FILE}
+```
+
+
+### クライアントの鍵と証明書要求の作り方
+
+※ クライアントの仕事
 
 ```sh
 COMMON="server_01"
