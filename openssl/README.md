@@ -55,7 +55,7 @@ openssl req -new -key ${KEY_FILE} -out ${CSR_FILE} -subj "${SUBJECT}"
 openssl req -noout -text -in /ca/ca.csr
 
 # CA 証明書作成
-openssl x509 -req -in /ca/ca.csr -signkey /ca/private/cakey.pem -out /ca/cacert.pem
+openssl x509 -req -in /ca/ca.csr -signkey /ca/private/cakey.pem -out /ca/cacert.pem -extfile /usr/lib/ssl/v3_ca.txt
 ```
 
 
