@@ -1,0 +1,10 @@
+version: '3'
+services:
+    ansible:
+        image: mikoto2000/ansible:2.2.1.0-2
+        volumes:
+            - ${SSH_DIR}:/ssh
+            - ${WORK_DIR}:/work
+        working_dir: /work
+        command: bash -c "cp /ssh/* /root/.ssh && chmod 600 /root/.ssh/* && /bin/bash && rm -rf /root/.ssh"
+
