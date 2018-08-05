@@ -1,0 +1,11 @@
+version: '3'
+services:
+    pdftk:
+        image: mikoto2000/pdftk:latest
+        environment:
+            - LANG=C.UTF-8
+        network_mode: none
+        volumes:
+            - ${WORK}:/work
+        working_dir: /work
+
