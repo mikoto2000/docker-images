@@ -6,6 +6,6 @@ services:
             - LANG=C.UTF-8
         network_mode: none
         volumes:
-            - ${WORK}:/work
+            - ${WORK_DIR}:/work
         working_dir: /work
 
