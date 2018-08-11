@@ -1,0 +1,38 @@
+FROM debian:stretch-slim AS build-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="1.8.0-6"
+LABEL description "googletest: 1.8.0-6, build-essential:12.3, cmake: 3.7.2-1"
+
+# googletest ビルドに必要なものをインストール
+RUN apt-get update && apt-get install -y \
+    build-essential=12.3 \
+    googletest=1.8.0-6 \
+    cmake=3.7.2-1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# googletest をビルドして、出力用ディレクトリにコピーする
+WORKDIR /work
+RUN rm -rf ./* && cmake /usr/src/googletest/googletest/ && make && mkdir -p /libgtest && cp ./libgtest* /libgtest
+RUN rm -rf ./* && cmake -DBUILD_SHARED_LIBS=ON /usr/src/googletest/googletest/ && make && mkdir -p /libgtest && cp ./libgtest* /libgtest
+
+FROM debian:stretch-slim
+
+# C プログラムビルドに必要な最低限のものをインストール
+RUN apt-get update && apt-get install -y \
+    build-essential=12.3 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# build-env の出力用ディレクトリからライブラリファイルをコピー
+COPY --from=build-env /libgtest/libgtest* /usr/local/lib/
+
+# googletest のヘッダファイルをコピー
+COPY --from=build-env /usr/src/googletest/googletest/include/* /usr/local/include/gtest/
+
+# ld が `.so` を探してくれるように ldconfig を行う
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/libgtest.conf && ldconfig
+
+CMD /bin/bash
+

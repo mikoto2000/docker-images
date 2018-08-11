@@ -1,0 +1,9 @@
+version: '3'
+services:
+    googletest:
+        image: mikoto2000/googletest:latest
+        network_mode: none
+        volumes:
+            - ./work:/project
+        working_dir: /project
+
