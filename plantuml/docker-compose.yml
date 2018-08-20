@@ -1,0 +1,13 @@
+version: '3'
+services:
+    plantuml:
+        image: mikoto2000/plantuml:latest
+        environment:
+                - LANG=C.UTF-8
+        network_mode: none
+        volumes:
+            - c:/Windows/fonts:/usr/share/fonts
+            - ./doc/diagrams:/work
+        working_dir: /work
+        entrypoint: java -jar /root/classpath/plantuml.jar -tsvg
+
