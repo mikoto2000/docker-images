@@ -19,6 +19,10 @@ RUN rm -rf ./* && cmake -DBUILD_SHARED_LIBS=ON /usr/src/googletest/googletest/ &
 
 FROM debian:stretch-slim
 
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="1.8.0-6"
+LABEL description "googletest: 1.8.0-6, build-essential:12.3, cmake: 3.7.2-1"
+
 # C プログラムビルドに必要な最低限のものをインストール
 RUN apt-get update && apt-get install -y \
     build-essential=12.3 \
