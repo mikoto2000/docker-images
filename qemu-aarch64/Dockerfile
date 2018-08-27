@@ -1,29 +1,64 @@
+# qemu バイナリビルド用環境
+FROM debian:stretch-slim as build-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v3.0.0"
+LABEL description "qemu-system-aarh64: 3.0.0"
+
+RUN apt-get update && apt-get -y install \
+    git \
+    gcc-aarch64-linux-gnu \
+    build-essential \
+    python \
+    pkg-config \
+    zlib1g-dev \
+    libglib2.0-dev \
+    libpixman-1-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+RUN git clone git://git.qemu.org/qemu.git \
+    && cd qemu \
+    && git checkout -b v3.0.0-release refs/tags/v3.0.0 \
+    && git submodule update --init \
+    && ./configure --target-list=arm-softmmu,aarch64-softmmu \
+    && make \
+    && make install
+
+# コンテナとして使う環境を作る
 FROM debian:stretch-slim
-MAINTAINER mikoto2000 <mikoto2000@gmail.com>
 
-# ベースシステムのアップデート
-RUN apt-get -y update && apt-get -y clean
-RUN apt-get -y upgrade && apt-get -y clean
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v3.0.0"
+LABEL description "qemu-system-aarh64: 3.0.0, gcc-aarch64-linux-gnu: 4:6.3.0-4"
 
-# Linaro のインストール
-ENV LINARO="gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu"
-ENV LINARO_FILE="${LINARO}.tar.xz"
-ENV LINARO_DOWNLOAD_URL="https://releases.linaro.org/components/toolchain/binaries/latest/aarch64-linux-gnu/"${LINARO_FILE}
+# aarch64 用のバイナリビルドができる環境を構築
+RUN apt-get update && apt-get -y install \
+    gcc-aarch64-linux-gnu=4:6.3.0-4 \
+    make \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get -y install wget tar xz-utils make && apt-get -y clean
-WORKDIR /var/app
-RUN wget ${LINARO_DOWNLOAD_URL}
-RUN tar xfv gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
+# build-env から必要なファイルをコピー
+# `/usr/local/bin/qemu-system-aarch64` と、
+# `ldd /usr/local/bin/qemu-system-aarch64` で表示される
+# ライブラリ群をコピーする
+COPY --from=build-env \
+    /usr/local/bin/qemu-system-aarch64 \
+    /usr/local/bin/qemu-system-aarch64
 
-ENV PATH ${PATH}:/var/app/${LINARO}/bin
+COPY --from=build-env \
+    /usr/lib/x86_64-linux-gnu/libpixman-1.so.0 \
+    /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0 \
+    /usr/lib/x86_64-linux-gnu/
 
-# QEMU のインストール
-RUN apt-get -y install git python pkg-config zlib1g-dev libglib2.0-dev libpixman-1-dev libfdt-dev && apt-get -y clean
-WORKDIR /var/app
-RUN git clone http://github.com/qemu/qemu
-WORKDIR /var/app/qemu
-RUN apt-get -y install build-essential
-RUN ./configure --target-list=aarch64-softmmu
-RUN make
+COPY --from=build-env \
+    /lib/x86_64-linux-gnu/libglib-2.0.so.0 \
+    /lib/x86_64-linux-gnu/
 
-ENV PATH ${PATH}:/var/app/qemu/aarch64-softmmu
+COPY --from=build-env \
+    /usr/local/share/qemu \
+    /usr/local/share/qemu
+
+
