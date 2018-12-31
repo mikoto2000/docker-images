@@ -1,0 +1,22 @@
+version: '3'
+services:
+    upsource:
+        image: jetbrains/upsource:2018.2.1141
+        volumes:
+            - upsource-data:/opt/upsource/data
+            - upsource-conf:/opt/upsource/conf
+            - upsource-logs:/opt/upsource/logs
+            - upsource-backup:/opt/upsource/backups
+        ports:
+            - "8080:8080"
+volumes:
+    upsource-data:
+        external: true
+    upsource-conf:
+        external: true
+    upsource-logs:
+        external: true
+    upsource-backup:
+        external: true
+
+
