@@ -2,6 +2,7 @@ version: '3'
 services:
     apt-cacher-ng:
         image: mikoto2000/apt-cacher-ng
+        restart: always
         volumes:
             - apt-cacher-ng:/var/cache/apt-cacher-ng
         ports:
