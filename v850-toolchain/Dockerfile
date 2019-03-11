@@ -36,9 +36,9 @@ RUN make install
 # gcc のビルド
 RUN mkdir -p /build/gcc
 WORKDIR /build/gcc
-RUN ../../gcc-4.9.2/configure --target=v850-elf --prefix=/usr/local --enable-languages=c,c++ --disable-nls --disable-multilib --disable-libssp --with-newlib --with-header=/newlib/newlib/libc/include
-RUN make CXXFLAGS="-std=c++03"; exit 0
-RUN make install; exit 0
+RUN ../../gcc-4.9.2/configure --target=v850-elf --prefix=/usr/local --enable-languages=c,c++ --disable-nls --disable-multilib --disable-libssp --with-newlib --with-headers=/newlib-2.1.0/newlib/libc/include
+RUN make CXXFLAGS="-std=c++03"
+RUN make install
 
 
 # newlib のビルド
