@@ -1,0 +1,23 @@
+FROM debian:buster-slim
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v0.5.1"
+LABEL description "mermaid.cli: 0.5.1"
+
+RUN apt-get update && apt-get -y upgrade \
+    && apt-get -y install --no-install-recommends \
+        chromium \
+        npm \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /opt/local/mermaid.cli \
+    && cd /opt/local/mermaid.cli \
+    && npm install mermaid.cli
+
+RUN echo '{"args": ["--no-sandbox"]}' > /opt/local/mermaid.cli/puppeteer-config.json
+
+ENV PATH /opt/local/mermaid.cli/node_modules/.bin:$PATH
+
+ENTRYPOINT ["mmdc", "-p", "/opt/local/mermaid.cli/puppeteer-config.json"]
+
