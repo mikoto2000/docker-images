@@ -1,0 +1,30 @@
+FROM debian:buster-slim as extract-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v12.0.1"
+LABEL description "OpenJDK: 12.0.1"
+
+RUN apt-get update && apt-get -y upgrade && apt-get -y install \
+    wget \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q https://download.java.net/java/GA/jdk12.0.1/69cfe15208a647278a19ef0990eea691/12/GPL/openjdk-12.0.1_linux-x64_bin.tar.gz
+RUN tar xf  openjdk-12.0.1_linux-x64_bin.tar.gz -C /opt
+
+
+FROM debian:buster-slim
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v12.0.1"
+LABEL description "OpenJDK: 12.0.1"
+
+RUN apt-get update && apt-get -y upgrade \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=extract-env \
+    /opt/jdk-12.0.1 \
+    /opt/jdk-12.0.1
+ENV PATH $PATH:/opt/jdk-12.0.1/bin
+
