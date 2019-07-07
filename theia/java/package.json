@@ -1,0 +1,24 @@
+{
+    "private": true,
+    "dependencies": {
+        "@theia/git": "next",
+        "@theia/editor-preview": "next",
+        "@theia/getting-started": "next",
+        "@theia/json": "next",
+        "@theia/plugin-ext-vscode": "next",
+        "@theia/preview": "next",
+        "@theia/textmate-grammars": "next"
+    },
+    "devDependencies": {
+        "@theia/cli": "next",
+        "@theia/debug": "next"
+    },
+    "scripts": {
+        "postinstall": "download-debug-adapters"
+    },
+    "adapterDir": "plugins",
+    "adapters": {
+        "vscode-java": "https://redhat.gallery.vsassets.io/_apis/public/gallery/publisher/redhat/extension/java/0.46.0/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage"
+    }
+}
+
