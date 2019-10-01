@@ -114,6 +114,35 @@ openssl pkcs12 -export -out ${P12_FILE} -inkey ${KEY_FILE} -in ${CRT_FILE} -cert
 
 ※ クライアントの仕事
 
+### SAN の設定
+
+`usr_lib_ssl/openssl.cnf` の末尾に以下のセクション・設定項目を追加し、
+`alt_names` セクションの DNS 名を修正する。
+
+■ 設定例:
+
+```cnf
+[ req ]
+req_extensions = v3_req
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = mikoto2000.example.com
+DNS.2 = *.mikoto2000.example.com
+```
+
+設定を追加したら、 openssl の Docker コンテナを起動する。
+
+```sh
+docker-compose run --rm openssl /bin/bash
+```
+
+Docker コンテナ内で鍵の生成・証明書要求作成を行う。
+
 ```sh
 COMMON="server_01"
 KEY_FILE="/client/${COMMON}.key"
