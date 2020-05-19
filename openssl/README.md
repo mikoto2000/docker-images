@@ -28,6 +28,7 @@ echo "01" | tee -a crlnumber
 
 # インデックス初期化
 touch index.txt
+echo "unique_subjec = yes" > index.txt.attr
 ```
 
 
