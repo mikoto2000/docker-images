@@ -1,6 +1,13 @@
 openssl
 =======
 
+Build:
+------
+
+```sh
+docker build -t mikoto2000/openssl:latest .
+```
+
 Usage:
 ------
 
@@ -165,4 +172,9 @@ openssl req -new -key ${KEY_FILE} -out ${CSR_FILE} -subj "${SUBJECT}"
 # クライアント証明書要求確認
 openssl req -noout -text -in ${CSR_FILE}
 ```
+
+DockerHub:
+----------
+
+https://hub.docker.com/r/mikoto2000/openssl
 
