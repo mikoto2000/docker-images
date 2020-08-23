@@ -22,3 +22,9 @@ docker build -t mikoto2000/toppers-kernel-build-kit:gcc-aarch64-linux-gnu-latest
 docker build -t mikoto2000/toppers-kernel-build-kit:gcc-arm-none-eabi-latest -f Dockerfile_gcc-arm-none-eabi .
 ```
 
+### zig with gcc-arm-none-eabi
+
+```sh
+docker build -t mikoto2000/toppers-kernel-build-kit:zig-with-gcc-arm-none-eabi-latest -f Dockerfile_zig-with-gcc-arm-none-eabi .
+```
+
