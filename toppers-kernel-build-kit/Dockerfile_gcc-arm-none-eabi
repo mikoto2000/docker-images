@@ -1,0 +1,12 @@
+# コンテナとして使う環境を作る
+FROM mikoto2000/toppers-kernel-build-kit:base-latest
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="1.0.0"
+LABEL description "toppers-kernel-build-kit. gcc-arm-none-eabi: 15:7-2018-q2-6"
+
+RUN apt-get update && apt-get -y install \
+    gcc-arm-none-eabi=15:7-2018-q2-6 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
