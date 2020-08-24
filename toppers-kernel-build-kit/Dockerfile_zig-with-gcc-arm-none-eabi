@@ -28,11 +28,15 @@ LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL version="1.0.0"
 LABEL description "toppers-kernel-build-kit. zig: 0.6.0+4e63cae36, gcc-arm-none-eabi: 15:7-2018-q2-6"
 
-COPY --from=build-env \
+COPY --chown=root:root --from=build-env \
     /opt/zig-linux-x86_64-0.6.0+4e63cae36 /opt/zig-linux-x86_64-0.6.0+4e63cae36
 
-COPY --from=build-env \
+COPY --chown=root:root --from=build-env \
     /opt/tecsgen-1.7.0 /opt/tecsgen-1.7.0
+
+RUN chmod 755 /opt/tecsgen-1.7.0/tecsgen \
+    && find /opt/tecsgen-1.7.0/tecsgen -type d -print0 | xargs -0 chmod 755 \
+    && find /opt/tecsgen-1.7.0/tecsgen -type f -name '*.rb' -print0 | xargs -0 chmod 755
 
 ENV PATH=$PATH:/opt/zig-linux-x86_64-0.6.0+4e63cae36
 
