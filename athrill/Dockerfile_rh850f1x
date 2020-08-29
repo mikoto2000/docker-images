@@ -21,6 +21,16 @@ RUN curl -L -O https://www.toppers.jp/download.cgi/athrill-target-rh850f1x-20200
     && cd ../../.. \
     && rm -rf hakoniwa
 
+# サンプル実行のための設定ファイル
+RUN mkdir -p /opt/athrill/params/rh850f1x/atk2-sc1 \
+    && cd /opt/athrill/params/rh850f1x/atk2-sc1 \
+    && curl -L -O https://raw.githubusercontent.com/toppers/athrill-target-rh850f1x/master/params/rh850f1k/atk2-sc1/device_config.txt \
+    && curl -L -O https://raw.githubusercontent.com/toppers/athrill-target-rh850f1x/master/params/rh850f1k/atk2-sc1/memory.txt \
+    && mkdir -p /opt/athrill/params/rh850f1x/atk2-sc3 \
+    && cd /opt/athrill/params/rh850f1x/atk2-sc3 \
+    && curl -L -O https://raw.githubusercontent.com/toppers/athrill-target-rh850f1x/master/params/rh850f1k/atk2-sc3/device_config.txt \
+    && curl -L -O https://raw.githubusercontent.com/toppers/athrill-target-rh850f1x/master/params/rh850f1k/atk2-sc3/memory.txt
+
 # 実行環境を構築してビルド環境からバイナリをコピー
 FROM debian:buster-slim
 
@@ -40,5 +50,7 @@ COPY --from=build-env \
 COPY --from=build-env \
     /usr/local/bin/athrill-run \
     /usr/local/bin
-
+COPY --from=build-env \
+    /opt/athrill \
+    /opt/athrill
 
