@@ -1,0 +1,44 @@
+# ビルド環境を構築してビルド
+FROM debian:buster-slim as build-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="1.0.0"
+LABEL description "athrill-rh850f1x: v1.1.1"
+
+RUN apt-get update && apt-get -y install \
+    make \
+    gcc \
+    curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -L -O https://www.toppers.jp/download.cgi/athrill-target-rh850f1x-20200820.tar.gz \
+    && tar xf athrill-target-rh850f1x-20200820.tar.gz \
+    && cd hakoniwa/athrill-target-rh850f1x/build_linux \
+    && make \
+    && mv athrill2 /usr/local/bin/athrill2 \
+    && mv ../../athrill/bin/linux/athrill-run /usr/local/bin/athrill-run \
+    && cd ../../.. \
+    && rm -rf hakoniwa
+
+# 実行環境を構築してビルド環境からバイナリをコピー
+FROM debian:buster-slim
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="1.0.0"
+LABEL description "athrill-rh850f1x: v1.1.1"
+
+RUN apt-get update && apt-get -y install \
+    file \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# build-env から必要なファイルをコピー
+COPY --from=build-env \
+    /usr/local/bin/athrill2 \
+    /usr/local/bin
+COPY --from=build-env \
+    /usr/local/bin/athrill-run \
+    /usr/local/bin
+
+
