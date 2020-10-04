@@ -1,0 +1,30 @@
+FROM debian:buster-slim as extract-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v15"
+LABEL description "OpenJDK: 15"
+
+RUN apt-get update && apt-get -y upgrade && apt-get -y install \
+    wget \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
+RUN tar xf openjdk-15_linux-x64_bin.tar.gz -C /opt
+
+
+FROM debian:buster-slim
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v15"
+LABEL description "OpenJDK: 15"
+
+RUN apt-get update && apt-get -y upgrade \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=extract-env \
+    /opt/jdk-15 \
+    /opt/jdk-15
+ENV PATH $PATH:/opt/jdk-15/bin
+
