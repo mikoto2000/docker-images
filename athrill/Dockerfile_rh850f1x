@@ -53,4 +53,9 @@ COPY --from=build-env \
 COPY --from=build-env \
     /opt/athrill \
     /opt/athrill
+COPY ./geany.sh \
+    /usr/local/bin
+COPY ./codelist.awk \
+    /usr/local/bin
+
 
