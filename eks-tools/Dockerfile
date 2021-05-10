@@ -24,5 +24,15 @@ RUN curl -LO https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz \
     && rm -rf linux-amd64 \
     && rm -rf helm-v3.5.3-linux-amd64.tar.gz
 
+# kops
+RUN curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64 \
+    && chmod +x kops-linux-amd64 \
+    && mv kops-linux-amd64 /usr/local/bin/kops
+
+# misc
+RUN yum install -y openssh-clients bind-utils git jq \
+    && rm -rf /var/cache/yum/* \
+    && yum clean all
+
 ENTRYPOINT bash
 
