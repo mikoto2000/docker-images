@@ -2,9 +2,19 @@ FROM amazon/aws-cli:2.1.34
 
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL version="1.0.0"
-LABEL description "eksctl: 0.43.0, aws-cli: 2.1.34, kubectl: 1.20.0, helm: 3.5.3"
+LABEL description "eksctl: 0.43.0, aws-cli: 2.1.34, kubectl: 1.20.0, helm: 3.5.3, terraform: 0.15.4"
 
-RUN yum install -y tar gzip \
+# yum packages
+RUN yum install -y yum-utils \
+    && yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo \
+    && yum install -y \
+        terraform \
+        tar \
+        gzip \
+        openssh-clients \
+        bind-utils \
+        git \
+        jq \
     && rm -rf /var/cache/yum/* \
     && yum clean all
 
@@ -28,11 +38,6 @@ RUN curl -LO https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz \
 RUN curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64 \
     && chmod +x kops-linux-amd64 \
     && mv kops-linux-amd64 /usr/local/bin/kops
-
-# misc
-RUN yum install -y openssh-clients bind-utils git jq \
-    && rm -rf /var/cache/yum/* \
-    && yum clean all
 
 ENTRYPOINT bash
 
