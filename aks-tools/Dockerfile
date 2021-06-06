@@ -14,3 +14,13 @@ RUN curl -LO https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz \
     && rm -rf linux-amd64 \
     && rm -rf helm-v3.5.3-linux-amd64.tar.gz
 
+# azure-cli extension
+RUN az extension add --name aks-preview \
+    && az extension add --name azure-firewall
+
+# chectl
+RUN apk add nodejs \
+    && curl -sL  https://www.eclipse.org/che/chectl/ | bash -
+
+# misc
+RUN apk add bind-tools
