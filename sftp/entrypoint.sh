@@ -32,6 +32,7 @@ adduser ${SFTP_USER} sftp
 echo "Set home directory to '${SFTP_HOME_DIR}'"
 usermod -d ${SFTP_HOME_DIR} ${SFTP_USER}
 mkdir -p ${SFTP_ROOT_DIR}/${SFTP_HOME_DIR}
+chmod 755 ${SFTP_ROOT_DIR}
 chown ${SFTP_USER}:sftp ${SFTP_ROOT_DIR}/${SFTP_HOME_DIR}
 
 # Change sftp user password
