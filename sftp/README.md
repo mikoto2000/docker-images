@@ -23,6 +23,7 @@ docker run -it --rm -p "22:22" \
     -e SFTP_ROOT_DIR=/opt/sftp \
     -e SFTP_HOME_DIR=/video \
     -e SFTP_LOG_LEVEL=DEBUG3 \
+    -v -v "$(pwd)/sftp:/opt/sftp" \
     --name sftp \
     mikoto2000/sftp
 ```
