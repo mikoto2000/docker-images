@@ -1,7 +1,7 @@
 version: '3'
 services:
     ansible:
-        image: mikoto2000/ansible:2.2.1.0-2
+        image: mikoto2000/ansible:2.10.7
         volumes:
             - ${SSH_DIR}:/ssh
             - ${WORK_DIR}:/work

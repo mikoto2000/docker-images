@@ -13,3 +13,10 @@ Usage:
 docker-compose run --rm ansible
 ```
 
+build:
+------
+
+```sh
+docker build -t mikoto2000/ansible .
+```
+
