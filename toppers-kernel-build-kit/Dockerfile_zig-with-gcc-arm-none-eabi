@@ -1,24 +1,25 @@
 # イメージビルド環境
-FROM debian:buster-slim AS build-env
+FROM debian:bullseye-slim AS build-env
 
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL version="1.0.0"
-LABEL description "toppers-kernel-build-kit. zig: 0.6.0+4e63cae36, gcc-arm-none-eabi: 15:7-2018-q2-6"
+LABEL description "toppers-kernel-build-kit. zig: 0.8.0, gcc-arm-none-eabi"
 
 RUN apt-get update && apt-get -y install \
     curl xz-utils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# zig 0.6.0+4e63cae36 を /opt/zig-linux-x86_64-0.6.0+4e63cae36 にインストール
-RUN curl -L https://ziglang.org/builds/zig-linux-x86_64-0.6.0+4e63cae36.tar.xz -O \
-    && tar xf zig-linux-x86_64-0.6.0+4e63cae36.tar.xz -C /opt \
-    && rm zig-linux-x86_64-0.6.0+4e63cae36.tar.xz
+# zig 0.8.0 を /opt/zig-linux-x86_64-0.8.0 にインストール
+RUN curl -L "https://ziglang.org/download/0.8.0/zig-linux-$(uname -m)-0.8.0.tar.xz" -O \
+    && tar xf "zig-linux-$(uname -m)-0.8.0.tar.xz" -C /opt \
+    && mv "/opt/zig-linux-$(uname -m)-0.8.0" /opt/zig \
+    && rm "zig-linux-$(uname -m)-0.8.0.tar.xz"
 
-# tecsgen 1.7.0 のインストール
-RUN curl -L https://www.toppers.jp/download.cgi/tecsgen-1.7.0.tgz -O \
-    && tar xf tecsgen-1.7.0.tgz -C /opt \
-    && rm tecsgen-1.7.0.tgz
+# tecsgen 1.8.0 のインストール
+RUN curl -L https://www.toppers.jp/download.cgi/tecsgen-1.8.0.tgz -O \
+    && tar xf tecsgen-1.8.0.tgz -C /opt \
+    && rm tecsgen-1.8.0.tgz
 
 
 # コンテナとして使う環境を作る
@@ -26,17 +27,17 @@ FROM mikoto2000/toppers-kernel-build-kit:gcc-arm-none-eabi-latest
 
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL version="1.0.0"
-LABEL description "toppers-kernel-build-kit. zig: 0.6.0+4e63cae36, gcc-arm-none-eabi: 15:7-2018-q2-6"
+LABEL description "toppers-kernel-build-kit. zig: 0.8.0, gcc-arm-none-eabi"
 
 COPY --chown=root:root --from=build-env \
-    /opt/zig-linux-x86_64-0.6.0+4e63cae36 /opt/zig-linux-x86_64-0.6.0+4e63cae36
+    "/opt/zig" "/opt/zig"
 
 COPY --chown=root:root --from=build-env \
-    /opt/tecsgen-1.7.0 /opt/tecsgen-1.7.0
+    /opt/tecsgen-1.8.0 /opt/tecsgen-1.8.0
 
-RUN chmod 755 /opt/tecsgen-1.7.0/tecsgen \
-    && find /opt/tecsgen-1.7.0/tecsgen -type d -print0 | xargs -0 chmod 755 \
-    && find /opt/tecsgen-1.7.0/tecsgen -type f -name '*.rb' -print0 | xargs -0 chmod 755
+RUN chmod 755 /opt/tecsgen-1.8.0/tecsgen \
+    && find /opt/tecsgen-1.8.0/tecsgen -type d -print0 | xargs -0 chmod 755 \
+    && find /opt/tecsgen-1.8.0/tecsgen -type f -name '*.rb' -print0 | xargs -0 chmod 755
 
-ENV PATH=$PATH:/opt/zig-linux-x86_64-0.6.0+4e63cae36
+ENV PATH=$PATH:"/opt/zig"
 
