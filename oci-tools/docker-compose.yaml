@@ -1,0 +1,8 @@
+version: '3'
+services:
+    oci-tools:
+        image: mikoto2000/oci-tools
+        volumes:
+            - ~/.oci:/root/.oci
+        working_dir: /work
+        command: bash -c "chmod 700 /root/.oci && chmod 600 /root/.oci/oci_api_key.pem && chmod 600 /root/.oci/oci_api_key.pem && /bin/bash"
