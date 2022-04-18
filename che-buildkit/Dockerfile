@@ -39,3 +39,5 @@ RUN apt-get update \
 
 RUN npm install -g yarn
 
+RUN docker buildx create --name mybuilder --use
+
