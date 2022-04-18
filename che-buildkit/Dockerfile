@@ -36,3 +36,6 @@ RUN apt-get update \
         containerd.io \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g yarn
+
