@@ -4,7 +4,9 @@ LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL version="1.0.0"
 LABEL description "Rust"
 
-ENV PATH=/usr/local/cargo/bin:$PATH
+ENV RUSTUP_HOME /opt/rust
+ENV CARGO_HOME /opt/rust
+ENV PATH=/opt/rust/bin:$PATH
 
 RUN apt-get update && apt-get -y install \
     build-essential \
