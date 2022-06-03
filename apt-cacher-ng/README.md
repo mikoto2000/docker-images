@@ -18,9 +18,16 @@ docker volume create apt-cacher-ng
 docker-compose up -d
 ```
 
-### docker build の際に apt-cacher-ng のキャッシュを使う
+### Build
+
+#### Docker Desktop
 
 ```sh
-docker build --build-arg http_proxy=http://host.docker.internal:3142/ [options] .
+docker build --build-arg http_proxy=http://host.docker.internal:3142/ -t mikoto2000/apt-cacher-ng .
 ```
 
+#### Linux
+
+```sh
+docker build --add-host=host.docker.internal:host-gateway --build-arg http_proxy=http://host.docker.internal:3142/ -t mikoto2000/apt-cacher-ng .
+```
