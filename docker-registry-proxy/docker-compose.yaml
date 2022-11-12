@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  docker-registry-proxy:
+    image: rpardini/docker-registry-proxy:0.6.4
+    restart: always
+    environment:
+      # k8s のマニフェストキャッシュ機能を有効化
+      ENABLE_MANIFEST_CACHE: true
+      # `registry-1.docker.io` 以外にキャッシュしたいレジストリをスペース区切りで記載
+      REGISTRIES: "k8s.gcr.io gcr.io quay.io"
+    volumes:
+      # キャッシュデータ格納用ディレクトリ
+      - docker-registry-proxy:/docker_mirror_cache
+      # 証明書関連データ格納ディレクトリ
+      - docker-registry-proxy-ca:/ca
+    ports:
+      - 0.0.0.0:3128:3128
+volumes:
+  # キャッシュデータ格納用ボリューム
+  docker-registry-proxy:
+    name: docker-registry-proxy
+  # 証明書関連データ格納ボリューム
+  docker-registry-proxy-ca:
+    name: docker-registry-proxy-ca
+
