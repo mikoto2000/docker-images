@@ -5,6 +5,8 @@ services:
     image: rpardini/docker-registry-proxy:0.6.4
     restart: always
     environment:
+      # docker push を許可
+      ALLOW_PUSH: true
       # k8s のマニフェストキャッシュ機能を有効化
       ENABLE_MANIFEST_CACHE: true
       # `registry-1.docker.io` 以外にキャッシュしたいレジストリをスペース区切りで記載
