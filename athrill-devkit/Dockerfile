@@ -1,11 +1,11 @@
-FROM debian:bullseye-slim as build-env
+FROM ubuntu:20.04
 
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL version="1.1.0"
-LABEL description "make:4.3-4.1, gcc:4:10.2.1-1, g++:4:10.2.1-1, rsync:3.2.3-4+deb11u1"
+LABEL description "cmake:3.16.3-1ubuntu1.20.04.1, make:4.2.1-1.2, gcc:4:9.3.0-1ubuntu2, g++:4:9.3.0-1ubuntu2, rsync:3.1.3-8ubuntu0.4, libspdlog-dev=1:1.5.0-1"
 
 RUN apt-get update \
-    && apt-get -y install make=4.3-4.1 gcc=4:10.2.1-1 g++=4:10.2.1-1 rsync=3.2.3-4+deb11u1 \
+    && apt-get -y install cmake=3.16.3-1ubuntu1.20.04.1 make=4.2.1-1.2 gcc=4:9.3.0-1ubuntu2 g++=4:9.3.0-1ubuntu2 rsync=3.1.3-8ubuntu0.4 libspdlog-dev=1:1.5.0-1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
