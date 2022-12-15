@@ -1,0 +1,81 @@
+# qemu バイナリビルド用環境
+FROM debian:bullseye-slim as build-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v2022.2"
+LABEL description "qemu-system-aarh64: xilinx-v2022.2"
+
+RUN apt-get update && apt-get -y upgrade \
+    && apt-get -y install \
+        git \
+        build-essential \
+        ninja-build \
+        python \
+        libglib2.0-dev \
+        libgcrypt20-dev \
+        zlib1g-dev \
+        autoconf \
+        automake \
+        libtool \
+        bison \
+        flex \
+        libpixman-1-dev \
+        device-tree-compiler \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+RUN git clone --recursive --depth 1 https://github.com/Xilinx/qemu.git -b xilinx_v2022.2 \
+    && cd qemu \
+    && ./configure --target-list="aarch64-softmmu,microblazeel-softmmu" --enable-fdt --disable-kvm --disable-xen \
+    && make \
+    && make install
+
+RUN git clone --recursive https://github.com/Xilinx/qemu-devicetrees.git \
+    && cd qemu-devicetrees \
+    && make OUTDIR=/var/dts
+
+RUN git clone -b xilinx-v2019.1 --depth 1 --recursive https://github.com/Xilinx/linux-xlnx.git \
+    && cd linux-xlnx \
+    && sed -i -e "s/#include/\/include\//" arch/arm/boot/dts/zynq-zybo.dts \
+    && dtc -I dts -O dtb -o /var/dts/zynq-zybo.dtb arch/arm/boot/dts/zynq-zybo.dts
+
+# コンテナとして使う環境を作る
+FROM debian:bullseye-slim
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v2022.2"
+LABEL description "qemu-system-aarh64: xilinx-v2022.2"
+
+# aarch64 用のバイナリビルドができる環境を構築
+RUN apt-get update && apt-get -y install \
+    gcc-aarch64-linux-gnu \
+    gdb-multiarch \
+    make \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# build-env から必要なファイルをコピー
+# `/usr/local/bin/qemu-system-aarch64` をコピー
+COPY --from=build-env \
+    /usr/local/bin/qemu-system-aarch64 \
+    /usr/local/bin/qemu-system-aarch64
+
+# `ldd /usr/local/bin/qemu-system-aarch64` で表示される
+# ライブラリ群をインストール
+RUN apt-get update \
+    && apt-get -y install \
+        libpixman-1-0 \
+        libglib2.0-0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=build-env \
+    /usr/local/share/qemu \
+    /usr/local/share/qemu
+
+COPY --from=build-env \
+    /var/dts \
+    /var/dts
+
+
