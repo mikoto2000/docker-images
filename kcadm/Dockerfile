@@ -21,6 +21,8 @@ FROM alpine:3.17
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL description "kcadm for keycloak version 19."
 
+RUN apk add --no-cache jq
+
 COPY --from=build-jre \
         /opt/keycloak-jre \
         /opt/keycloak-jre
