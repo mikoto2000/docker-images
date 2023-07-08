@@ -6,5 +6,5 @@ LABEL description "curl, jq"
 
 RUN apk add --no-cache jq
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/sh"]
 
