@@ -1,0 +1,19 @@
+# escape=`
+FROM mcr.microsoft.com/windows/servercore:ltsc2022 as build-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="v21.7.1-1"
+LABEL description "node: 21.7.1"
+
+
+SHELL ["powershell", "-c"]
+
+RUN Invoke-WebRequest https://nodejs.org/dist/v21.7.1/node-v21.7.1-win-x64.zip -OutFile .\node-v21.7.1-win-x64.zip; `
+    Expand-Archive -Path .\node-v21.7.1-win-x64.zip -DestinationPath C:\ ;`
+    Remove-Item .\node-v21.7.1-win-x64.zip
+
+RUN $new_path = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';C:\node-v21.7.1-win-x64'; `
+    [Environment]::SetEnvironmentVariable('Path', $new_path, 'Machine')
+
+CMD ["node"]
+
