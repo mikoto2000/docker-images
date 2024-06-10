@@ -1,8 +1,8 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
-LABEL version "20220603"
-LABEL description "apt-cacher-ng: 3.6.4-1, with HTTPS pass through."
+LABEL version "20240611"
+LABEL description "apt-cacher-ng: 3.7.4-1+b2, with HTTPS pass through."
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-cacher-ng \
