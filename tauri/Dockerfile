@@ -1,8 +1,8 @@
-FROM node:17
+FROM node:22
 
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
-LABEL version="1.0.0"
-LABEL description "Node: 17, Rust: "
+LABEL version="2.0.0"
+LABEL description "Node: 22, Rust: "
 
 ENV PATH=/usr/local/cargo/bin:$PATH
 
@@ -15,7 +15,7 @@ RUN apt-get update && apt-get -y install \
     wget \
     libssl-dev \
     libgtk-3-dev \
-    libappindicator3-0.1-cil-dev \
+    libayatana-appindicator3-0.1-cil-dev \
     librsvg2-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
