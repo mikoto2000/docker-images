@@ -17,8 +17,14 @@ RUN apt-get update && apt-get -y install \
     libgtk-3-dev \
     libayatana-appindicator3-0.1-cil-dev \
     librsvg2-dev \
+    sudo \
+    fonts-noto-cjk \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# node ユーザーが sudo を使えるようにする
+RUN usermod -aG sudo node \
+    && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER node
 WORKDIR /home/node
