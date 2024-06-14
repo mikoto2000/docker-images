@@ -34,5 +34,9 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-setup.sh
     && ./rustup-setup.sh -y \
     && rm -rf rustup-setup.sh
 
+# なぜか無効な rust-analyzer, rls がインストールされる問題の対応
+RUN rm /home/node/.cargo/bin/rust-analyzer \
+    /home/node/.cargo/bin/rls
+
 CMD ["bash"]
 
