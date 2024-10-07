@@ -1,0 +1,15 @@
+Types: deb
+URIs: http://binaries2.erlang-solutions.com/ubuntu/
+Suites: jammy-esl-erlang-25
+Components: contrib
+
+Types: deb
+URIs: http://binaries2.erlang-solutions.com/debian/
+Suites: bullseye-elixir-1.15
+Components: contrib
+
+Types: deb
+URIs: http://binaries2.erlang-solutions.com/ubuntu/
+Suites: bionic-mongooseim-6
+Components: contrib
+
