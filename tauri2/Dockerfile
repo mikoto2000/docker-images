@@ -12,6 +12,7 @@ RUN apt-get update && apt-get -y install \
     libsoup-3.0-dev \
     libwebkit2gtk-4.1-dev \
     build-essential \
+    lld \
     curl \
     wget \
     libssl-dev \
