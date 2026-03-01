@@ -1,0 +1,35 @@
+services:
+  traefik:
+    image: traefik:v3.6
+    container_name: traefik
+    command:
+      # Docker のコンテナ/ラベルを監視して動的にルーティング生成
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+
+      # 入口（HTTP）
+      - --entrypoints.web.address=:80
+
+      # 開発用ダッシュボード（ローカルだけで使う想定）
+      - --api.dashboard=true
+      - --api.insecure=true
+
+      # ログ（お好みで）
+      - --log.level=INFO
+      - --accesslog=true
+    ports:
+      - "80:80"
+      # ダッシュボード: http://localhost:8080/dashboard/
+      - "8080:8080"
+    volumes:
+      # Traefik が Docker の状態を見るために必要（読み取り専用推奨）
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - edge
+    restart: unless-stopped
+
+networks:
+  edge:
+    name: edge
+    external: true
+
