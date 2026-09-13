@@ -1,0 +1,48 @@
+services:
+  showui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+    container_name: showui
+    # 常駐: ホスト再起動後も自動で戻す
+    restart: always
+    # GPU を使う（DGX Spark の unified memory を共有）
+    gpus: all
+    # vLLM は共有メモリを使うため必須
+    ipc: host
+    # ホストの HF キャッシュをマウントしてモデルを pre-stage
+    volumes:
+      - ~/.cache/huggingface:/home/vllm/.cache/huggingface
+    environment:
+      - HF_HOME=/home/vllm/.cache/huggingface
+      - VLLM_HOST_IP=0.0.0.0
+      - HF_TOKEN=${HF_TOKEN:-}
+      - VERBOSE=1
+    # ShowUI-2B を OpenAI 互換 API として常駐 serve
+    command:
+      # - ByteDance-Seed/UI-TARS-2B-SFT
+      - showlab/ShowUI-2B
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8888"
+      - --served-model-name
+      - showui-2b
+      # - ui-tars-2b
+      - --trust-remote-code
+      - --max-model-len
+      - "2048"
+      - --max-num-seqs
+      - "1"
+      - --limit-mm-per-prompt
+      - '{"image": 1}'
+      - --gpu-memory-utilization
+      - "0.075"
+      - --mm-processor-cache-gb
+      - "0"
+      - --enforce-eager
+    ports:
+      - "8888:8888"
+
