@@ -1,6 +1,6 @@
 # ShowUI-2B for NVIDIA DGX Spark (GB10 / sm_121a)
 #
-[>4;0m# ShowUI-2B は Qwen2-VL ベースの Vision-Language-Action (VLA) モデル。
+# ShowUI-2B は Qwen2-VL ベースの Vision-Language-Action (VLA) モデル。
 # DGX Spark は ARM64 (aarch64) + Blackwell sm_121a のため、
 # 標準の x86 向け vLLM イメージは動かない。
 # 公式の CUDA 13 nightly 系イメージが sm_121 対応の実績ある経路。
